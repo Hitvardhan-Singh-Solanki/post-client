@@ -61,7 +61,9 @@ const Navbar = ({ isAuthenticated, setIsAuthenticated, history }) => {
         ) : (
           <NavListElement onClick={handleLogout}>Logout</NavListElement>
         )}
-        <NavListElement onClick={sendReqToProtect}>Doc</NavListElement>
+        <NavListElement>
+          <Link to="/doc">Doc</Link>
+        </NavListElement>
       </NavList>
       <div>{isAuthenticated}</div>
     </NavbarContainer>

@@ -27,7 +27,7 @@ const LoginForm = ({ history, setIsAuthenticated, isAuthenticated }) => {
     });
     if (response.status === 200) {
       setIsAuthenticated(true);
-      history.push('/docs');
+      history.push('/doc');
     } else {
       alert('Login failed');
     }

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import AuthPage from './Pages/hocs/AuthPage';
+import Maindoc from './Pages/Maindoc';
 import LoginForm from './Components/LoginForm';
 import SignupForm from './Components/SignupForm';
 import Navbar from './Components/Navbar';
@@ -35,6 +36,9 @@ function App() {
           </Route>
           <Route path="/sign-up">
             <SignupForm />
+          </Route>
+          <Route path="/doc">
+            <Maindoc isAuthenticated={isAuthenticated} />
           </Route>
         </Switch>
       </AuthPage>

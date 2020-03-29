@@ -35,7 +35,6 @@ const SignupForm = ({ history }) => {
         history.push('/login');
       }
     } catch (e) {
-      console.log('-->', e);
       alert('Signup failed');
     }
   };
