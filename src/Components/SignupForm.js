@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import { Button, Form } from 'semantic-ui-react';
+import { withRouter } from 'react-router-dom';
 
 const StyledButton = styled(Button)`
   width: 100%;
@@ -12,8 +13,8 @@ const StyledLabel = styled.label`
   color: #fff !important;
 `;
 
-const SignupForm = () => {
-  const [emailAddress, setEmailAddress] = useState('');
+const SignupForm = ({ history }) => {
+  const [email, setemail] = useState('');
   const [password, setPassword] = useState('');
   const [cnfPassword, setCnfPassword] = useState('');
 
@@ -21,16 +22,26 @@ const SignupForm = () => {
     if (password !== cnfPassword) {
       return alert(`Password do not match`);
     }
-    const { data } = await axios.post('http://localhost:8080/api/auth/signup', {
-      emailAddress,
-      password
-    });
 
-    console.log(data);
+    try {
+      const { status } = await axios.post(
+        'http://localhost:8080/api/auth/signup',
+        {
+          email,
+          password
+        }
+      );
+      if (status === 200) {
+        history.push('/login');
+      }
+    } catch (e) {
+      console.log('-->', e);
+      alert('Signup failed');
+    }
   };
 
   const handleEmailInputChange = e => {
-    setEmailAddress(e.target.value);
+    setemail(e.target.value);
   };
   const handlePasswordInputChange = e => {
     setPassword(e.target.value);
@@ -44,7 +55,7 @@ const SignupForm = () => {
         <StyledLabel htmlFor="email">Email Address</StyledLabel>
         <input
           placeholder=""
-          value={emailAddress}
+          value={email}
           id="email"
           onChange={handleEmailInputChange}
         />
@@ -74,7 +85,7 @@ const SignupForm = () => {
         primary
         disabled={
           password.length < 3 ||
-          emailAddress.length < 3 ||
+          email.length < 3 ||
           cnfPassword.length !== password.length
         }
       >
@@ -84,4 +95,4 @@ const SignupForm = () => {
   );
 };
 
-export default SignupForm;
+export default withRouter(SignupForm);

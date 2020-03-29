@@ -17,25 +17,24 @@ const StyledLabel = styled.label`
 `;
 
 const LoginForm = ({ history, setIsAuthenticated, isAuthenticated }) => {
-  const [emailAddress, setEmailAddress] = useState('');
+  const [email, setemail] = useState('');
   const [password, setPassword] = useState('');
 
   const setValues = async () => {
     const response = await axios.post('http://localhost:8080/api/auth/login', {
-      emailAddress,
+      email,
       password
     });
-    console.log(response);
     if (response.status === 200) {
-      // setIsAuthenticated(true);
-      // history.push('/docs');
+      setIsAuthenticated(true);
+      history.push('/docs');
     } else {
       alert('Login failed');
     }
   };
 
   const handleEmailInputChange = e => {
-    setEmailAddress(e.target.value);
+    setemail(e.target.value);
   };
   const handlePasswordInputChange = e => {
     setPassword(e.target.value);
@@ -46,7 +45,7 @@ const LoginForm = ({ history, setIsAuthenticated, isAuthenticated }) => {
         <StyledLabel htmlFor="email">Email Address</StyledLabel>
         <input
           placeholder=""
-          value={emailAddress}
+          value={email}
           id="email"
           onChange={handleEmailInputChange}
         />
@@ -64,7 +63,7 @@ const LoginForm = ({ history, setIsAuthenticated, isAuthenticated }) => {
       <StyledButton
         type="submit"
         primary
-        disabled={password.length < 3 || emailAddress.length < 3}
+        disabled={password.length < 3 || email.length < 3}
       >
         Submit
       </StyledButton>

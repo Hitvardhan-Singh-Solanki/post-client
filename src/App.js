@@ -4,15 +4,24 @@ import AuthPage from './Pages/hocs/AuthPage';
 import LoginForm from './Components/LoginForm';
 import SignupForm from './Components/SignupForm';
 import Navbar from './Components/Navbar';
+import axios from 'axios';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    axios.get('http://localhost:8080/api/auth/check-token').then(res => {
+      if (res.status === 200) setIsAuthenticated(true);
+      else setIsAuthenticated(false);
+    });
+  }, []);
 
   return (
     <Router>
-      <Navbar isAuthenticated={isAuthenticated} />
+      <Navbar
+        isAuthenticated={isAuthenticated}
+        setIsAuthenticated={setIsAuthenticated}
+      />
       <AuthPage>
         <Switch>
           <Route path="/" exact>

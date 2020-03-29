@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import Axios from 'axios';
 
+import { withRouter } from 'react-router-dom';
+
 const NavbarContainer = styled.div`
   background-color: rgba(0, 0, 0, 0.2);
   position: fixed;
@@ -26,12 +28,21 @@ const NavListElement = styled.li`
   }
 `;
 
-const Navbar = ({ isAuthenticated }) => {
+const Navbar = ({ isAuthenticated, setIsAuthenticated, history }) => {
   const sendReqToProtect = () => {
     Axios.get('http://localhost:8080/api/protected/test', {
       withCredentials: true
     }).then(res => {
       console.log('--->', res);
+    });
+  };
+
+  const handleLogout = () => {
+    Axios.get('http://localhost:8080/api/auth/logout', {
+      withCredentials: true
+    }).then(res => {
+      setIsAuthenticated(false);
+      history.push('/login');
     });
   };
 
@@ -48,7 +59,7 @@ const Navbar = ({ isAuthenticated }) => {
             </NavListElement>
           </>
         ) : (
-          <NavListElement>Logout</NavListElement>
+          <NavListElement onClick={handleLogout}>Logout</NavListElement>
         )}
         <NavListElement onClick={sendReqToProtect}>Doc</NavListElement>
       </NavList>
@@ -57,4 +68,4 @@ const Navbar = ({ isAuthenticated }) => {
   );
 };
 
-export default Navbar;
+export default withRouter(Navbar);
