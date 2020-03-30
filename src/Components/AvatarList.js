@@ -9,8 +9,8 @@ const AvatarListContainer = styled.div`
 export default ({ users = [] }) => {
   return (
     <AvatarListContainer>
-      {users.map(({ userName, avatar }) => (
-        <Avatar userName={userName} image={avatar} />
+      {users.map(({ email, image }) => (
+        <Avatar userName={email} image={image} />
       ))}
     </AvatarListContainer>
   );

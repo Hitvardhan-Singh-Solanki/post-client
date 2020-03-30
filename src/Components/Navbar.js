@@ -2,8 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import Axios from 'axios';
-
 import { withRouter } from 'react-router-dom';
+import Avatar from './Avatar';
+import avt from '../assets/images/avt1.svg';
 
 const NavbarContainer = styled.div`
   background-color: rgba(0, 0, 0, 0.2);
@@ -12,12 +13,19 @@ const NavbarContainer = styled.div`
   color: white;
   font-size: 16px;
   font-weight: 700;
+  display: flex;
+  align-items: center;
+  margin-right: 20px !important;
+  & div {
+    margin: 0 20px;
+  }
 `;
 
 const NavList = styled.ul`
   display: flex;
   list-style: none;
   padding: 10px;
+  flex: 1;
 `;
 
 const NavListElement = styled.li`
@@ -28,7 +36,13 @@ const NavListElement = styled.li`
   }
 `;
 
-const Navbar = ({ isAuthenticated, setIsAuthenticated, history }) => {
+const Navbar = ({
+  isAuthenticated,
+  setIsAuthenticated,
+  history,
+  setCurrentLoggerInUser,
+  currentLoggerInUser
+}) => {
   const sendReqToProtect = () => {
     Axios.get('http://localhost:8080/api/protected/test', {
       withCredentials: true
@@ -40,8 +54,9 @@ const Navbar = ({ isAuthenticated, setIsAuthenticated, history }) => {
   const handleLogout = () => {
     Axios.get('http://localhost:8080/api/auth/logout', {
       withCredentials: true
-    }).then(res => {
+    }).then(() => {
       setIsAuthenticated(false);
+      setCurrentLoggerInUser({});
       history.push('/login');
     });
   };
@@ -65,7 +80,15 @@ const Navbar = ({ isAuthenticated, setIsAuthenticated, history }) => {
           <Link to="/doc">Doc</Link>
         </NavListElement>
       </NavList>
-      <div>{isAuthenticated}</div>
+      {isAuthenticated && (
+        <Avatar
+          dontHover
+          userName={currentLoggerInUser.email}
+          image={currentLoggerInUser.image}
+          imgSize={'40px'}
+          shoudlTransform={false}
+        />
+      )}
     </NavbarContainer>
   );
 };

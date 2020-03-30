@@ -21,7 +21,12 @@ const StyledLabel = styled.label`
   text-align: left;
 `;
 
-const LoginForm = ({ history, setIsAuthenticated, isAuthenticated }) => {
+const LoginForm = ({
+  history,
+  setIsAuthenticated,
+  isAuthenticated,
+  setCurrentLoggerInUser
+}) => {
   const [email, setemail] = useState('');
   const [password, setPassword] = useState('');
   const [showError, setShowError] = useState(false);
@@ -40,15 +45,17 @@ const LoginForm = ({ history, setIsAuthenticated, isAuthenticated }) => {
       );
       if (response.status === 200) {
         setIsAuthenticated(true);
+        setCurrentLoggerInUser(response.data);
         history.push('/doc');
       } else {
         throw new Error(response.status);
       }
       setLoading(false);
-    } catch (e) {
+    } catch ({ message, response }) {
+      const errorMsg = response ? response.data.error : message;
       setShowError(true);
       setLoading(false);
-      setErrorMsg(`${e.message}: please try again.`);
+      setErrorMsg(`${errorMsg}: please try again.`);
       setTimeout(() => {
         setShowError(false);
         setErrorMsg('');

@@ -17,14 +17,17 @@ import Loader from './Components/Loader';
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [currentLoggerInUser, setCurrentLoggerInUser] = useState({});
 
   useEffect(() => {
     setLoading(true);
     axios
       .get('http://localhost:8080/api/auth/check-token')
       .then(res => {
-        if (res.status === 200) setIsAuthenticated(true);
-        else setIsAuthenticated(false);
+        if (res.status === 200) {
+          setIsAuthenticated(true);
+          setCurrentLoggerInUser(res.data);
+        } else setIsAuthenticated(false);
       })
       .catch(e => {
         console.log(e);
@@ -39,6 +42,8 @@ function App() {
       <Navbar
         isAuthenticated={isAuthenticated}
         setIsAuthenticated={setIsAuthenticated}
+        setCurrentLoggerInUser={setCurrentLoggerInUser}
+        currentLoggerInUser={currentLoggerInUser}
       />
       <AuthPage>
         {loading ? (
@@ -51,6 +56,7 @@ function App() {
             <Route path="/login">
               <FormContainer>
                 <LoginForm
+                  setCurrentLoggerInUser={setCurrentLoggerInUser}
                   setIsAuthenticated={setIsAuthenticated}
                   isAuthenticated={isAuthenticated}
                 />
@@ -62,7 +68,10 @@ function App() {
               </FormContainer>
             </Route>
             <Route path="/doc">
-              <Maindoc isAuthenticated={isAuthenticated} />
+              <Maindoc
+                isAuthenticated={isAuthenticated}
+                currentLoggerInUser={currentLoggerInUser}
+              />
             </Route>
           </Switch>
         )}
