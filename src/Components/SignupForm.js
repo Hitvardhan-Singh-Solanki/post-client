@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import axios from 'axios';
 import { Button, Form } from 'semantic-ui-react';
 import { withRouter } from 'react-router-dom';
+import Error from './Error';
 
 const StyledButton = styled(Button)`
   width: 100%;
@@ -18,9 +19,17 @@ const SignupForm = ({ history }) => {
   const [password, setPassword] = useState('');
   const [cnfPassword, setCnfPassword] = useState('');
 
+  const [showError, setShowError] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
+
   const setValues = async () => {
     if (password !== cnfPassword) {
-      return alert(`Password do not match`);
+      setErrorMsg(`Password do not match`);
+      setTimeout(() => {
+        setShowError(false);
+        setErrorMsg('');
+      }, 2500);
+      return setShowError(true);
     }
 
     try {
@@ -35,7 +44,12 @@ const SignupForm = ({ history }) => {
         history.push('/login');
       }
     } catch (e) {
-      alert('Signup failed');
+      setShowError(true);
+      setErrorMsg(`${e.message}: please try again.`);
+      setTimeout(() => {
+        setShowError(false);
+        setErrorMsg('');
+      }, 2500);
     }
   };
 
@@ -48,7 +62,9 @@ const SignupForm = ({ history }) => {
   const handleCnfPasswordInputChange = e => {
     setCnfPassword(e.target.value);
   };
-  return (
+  return showError ? (
+    <Error message={errorMsg} />
+  ) : (
     <Form onSubmit={setValues}>
       <Form.Field>
         <StyledLabel htmlFor="email">Email Address</StyledLabel>

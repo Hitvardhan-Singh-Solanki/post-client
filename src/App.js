@@ -11,10 +11,15 @@ function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    axios.get('http://localhost:8080/api/auth/check-token').then(res => {
-      if (res.status === 200) setIsAuthenticated(true);
-      else setIsAuthenticated(false);
-    });
+    axios
+      .get('http://localhost:8080/api/auth/check-token')
+      .then(res => {
+        if (res.status === 200) setIsAuthenticated(true);
+        else setIsAuthenticated(false);
+      })
+      .catch(e => {
+        console.log(e);
+      });
   }, []);
 
   return (
