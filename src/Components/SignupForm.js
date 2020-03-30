@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Button, Form } from 'semantic-ui-react';
 import { withRouter } from 'react-router-dom';
 import Error from './Error';
+import Loader from './Loader';
 
 const StyledButton = styled(Button)`
   width: 100%;
@@ -18,7 +19,7 @@ const SignupForm = ({ history }) => {
   const [email, setemail] = useState('');
   const [password, setPassword] = useState('');
   const [cnfPassword, setCnfPassword] = useState('');
-
+  const [loading, setLoading] = useState(false);
   const [showError, setShowError] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
 
@@ -29,10 +30,12 @@ const SignupForm = ({ history }) => {
         setShowError(false);
         setErrorMsg('');
       }, 2500);
+
       return setShowError(true);
     }
 
     try {
+      setLoading(true);
       const { status } = await axios.post(
         'http://localhost:8080/api/auth/signup',
         {
@@ -43,8 +46,10 @@ const SignupForm = ({ history }) => {
       if (status === 200) {
         history.push('/login');
       }
+      setLoading(false);
     } catch (e) {
       setShowError(true);
+      setLoading(false);
       setErrorMsg(`${e.message}: please try again.`);
       setTimeout(() => {
         setShowError(false);
@@ -64,6 +69,8 @@ const SignupForm = ({ history }) => {
   };
   return showError ? (
     <Error message={errorMsg} />
+  ) : loading ? (
+    <Loader />
   ) : (
     <Form onSubmit={setValues}>
       <Form.Field>
