@@ -8,11 +8,15 @@ import Loader from './Loader';
 
 const StyledButton = styled(Button)`
   width: 100%;
+  margin-top: 20px !important;
+  max-width: 250px;
 `;
 
 const StyledLabel = styled.label`
   font-size: 20px !important;
   color: #fff !important;
+  margin-bottom: 20px !important;
+  text-align: left;
 `;
 
 const SignupForm = ({ history }) => {

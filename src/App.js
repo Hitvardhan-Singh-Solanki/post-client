@@ -1,18 +1,25 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect
+} from 'react-router-dom';
 import AuthPage from './Pages/hocs/AuthPage';
 import Maindoc from './Pages/Maindoc';
 import LoginForm from './Components/LoginForm';
 import SignupForm from './Components/SignupForm';
 import Navbar from './Components/Navbar';
 import axios from 'axios';
-import Home from './Pages/Home';
 import FormContainer from './Pages/hocs/FormContainer';
+import Loader from './Components/Loader';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    setLoading(true);
     axios
       .get('http://localhost:8080/api/auth/check-token')
       .then(res => {
@@ -21,6 +28,9 @@ function App() {
       })
       .catch(e => {
         console.log(e);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   }, []);
 
@@ -31,27 +41,31 @@ function App() {
         setIsAuthenticated={setIsAuthenticated}
       />
       <AuthPage>
-        <Switch>
-          <Route path="/" exact>
-            <Home />
-          </Route>
-          <Route path="/login">
-            <FormContainer>
-              <LoginForm
-                setIsAuthenticated={setIsAuthenticated}
-                isAuthenticated={isAuthenticated}
-              />
-            </FormContainer>
-          </Route>
-          <Route path="/sign-up">
-            <FormContainer>
-              <SignupForm />
-            </FormContainer>
-          </Route>
-          <Route path="/doc">
-            <Maindoc isAuthenticated={isAuthenticated} />
-          </Route>
-        </Switch>
+        {loading ? (
+          <Loader />
+        ) : (
+          <Switch>
+            <Route path="/" exact>
+              <Redirect to="/login" />
+            </Route>
+            <Route path="/login">
+              <FormContainer>
+                <LoginForm
+                  setIsAuthenticated={setIsAuthenticated}
+                  isAuthenticated={isAuthenticated}
+                />
+              </FormContainer>
+            </Route>
+            <Route path="/sign-up">
+              <FormContainer>
+                <SignupForm />
+              </FormContainer>
+            </Route>
+            <Route path="/doc">
+              <Maindoc isAuthenticated={isAuthenticated} />
+            </Route>
+          </Switch>
+        )}
       </AuthPage>
     </Router>
   );
