@@ -6,6 +6,8 @@ import LoginForm from './Components/LoginForm';
 import SignupForm from './Components/SignupForm';
 import Navbar from './Components/Navbar';
 import axios from 'axios';
+import Home from './Pages/Home';
+import FormContainer from './Pages/hocs/FormContainer';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -31,16 +33,20 @@ function App() {
       <AuthPage>
         <Switch>
           <Route path="/" exact>
-            <div>THIS IS HOME</div>
+            <Home />
           </Route>
           <Route path="/login">
-            <LoginForm
-              setIsAuthenticated={setIsAuthenticated}
-              isAuthenticated={isAuthenticated}
-            />
+            <FormContainer>
+              <LoginForm
+                setIsAuthenticated={setIsAuthenticated}
+                isAuthenticated={isAuthenticated}
+              />
+            </FormContainer>
           </Route>
           <Route path="/sign-up">
-            <SignupForm />
+            <FormContainer>
+              <SignupForm />
+            </FormContainer>
           </Route>
           <Route path="/doc">
             <Maindoc isAuthenticated={isAuthenticated} />

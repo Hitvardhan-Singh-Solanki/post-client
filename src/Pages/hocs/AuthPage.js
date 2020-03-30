@@ -14,19 +14,10 @@ const AuthContainer = styled.div`
   background-position: center;
 `;
 
-const FormContainer = styled.div`
-  min-width: 40vw;
-  @media (max-width: 768px) {
-    width: 80vw;
-  }
-`;
+
 
 const AuthPage = props => {
-  return (
-    <AuthContainer>
-      <FormContainer>{props.children}</FormContainer>
-    </AuthContainer>
-  );
+  return <AuthContainer>{props.children}</AuthContainer>;
 };
 
 export default AuthPage;
