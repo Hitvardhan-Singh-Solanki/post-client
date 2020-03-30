@@ -4,26 +4,32 @@ import axios from 'axios';
 import { Button, Form } from 'semantic-ui-react';
 import { withRouter } from 'react-router-dom';
 import Error from './Error';
+import Loader from './Loader';
 
 axios.defaults.withCredentials = 'include';
 
 const StyledButton = styled(Button)`
   width: 100%;
-  margin-top: 16px;
+  margin-top: 20px !important;
+  max-width: 250px;
 `;
 
 const StyledLabel = styled.label`
   font-size: 20px !important;
   color: #fff !important;
+  margin-bottom: 20px !important;
+  text-align: left;
 `;
 
 const LoginForm = ({ history, setIsAuthenticated, isAuthenticated }) => {
   const [email, setemail] = useState('');
   const [password, setPassword] = useState('');
   const [showError, setShowError] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
 
   const setValues = async () => {
+    setLoading(true);
     try {
       const response = await axios.post(
         'http://localhost:8080/api/auth/login',
@@ -38,8 +44,10 @@ const LoginForm = ({ history, setIsAuthenticated, isAuthenticated }) => {
       } else {
         throw new Error(response.status);
       }
+      setLoading(false);
     } catch (e) {
       setShowError(true);
+      setLoading(false);
       setErrorMsg(`${e.message}: please try again.`);
       setTimeout(() => {
         setShowError(false);
@@ -58,6 +66,8 @@ const LoginForm = ({ history, setIsAuthenticated, isAuthenticated }) => {
     <>
       {showError ? (
         <Error message={errorMsg} />
+      ) : loading ? (
+        <Loader />
       ) : (
         <Form onSubmit={setValues}>
           <Form.Field>
