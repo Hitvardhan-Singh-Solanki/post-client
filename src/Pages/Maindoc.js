@@ -16,10 +16,16 @@ const MaindocContaienr = styled.div`
 export default ({ isAuthenticated, currentLoggerInUser }) => {
   const ENDPOINT = 'http://localhost:8080';
   const socket = socketIOClient(ENDPOINT);
+
+  const [newUser, setNewUser] = useState({});
+  const [users, setUsers] = useState([]);
+
   useEffect(() => {
     if (isAuthenticated) {
       socket.emit('join', { ...currentLoggerInUser });
-      socket.on('joined', data => console.log('JOINED DATA >', data));
+      socket.on('joined', data => {
+        alert(data.text);
+      });
       return () => {
         socket.emit('disconnect');
       };
@@ -27,14 +33,25 @@ export default ({ isAuthenticated, currentLoggerInUser }) => {
   }, [ENDPOINT]);
 
   useEffect(() => {
-    socket.on('USER_JOINED', message => {
-      console.log('-->', message);
+    socket.on('USER_JOINED', user => {
+      setNewUser(user);
     });
+    socket.on('ROOM_DATA', ({ users }) => {
+      console.log(users);
+      setUsers(users);
+    });
+    socket.on('USER_LEFT', data => {
+      console.log('-->', data);
+    });
+    return () => {
+      socket.emit('disconnect', { data: 'test' });
+    };
   }, []);
 
   return isAuthenticated ? (
     <MaindocContaienr>
-      <AvatarList users={[{ ...currentLoggerInUser }]} />
+      {newUser.email}
+      <AvatarList users={users} />
     </MaindocContaienr>
   ) : (
     <Error message={'Oops... are you lost?'} />
