@@ -14,11 +14,22 @@ const MaindocContaienr = styled.div`
 `;
 
 export default ({ isAuthenticated, currentLoggerInUser }) => {
-  const [endPoint, setEndPoint] = useState('http://localhost:8080');
+  const ENDPOINT = 'http://localhost:8080';
+  const socket = socketIOClient(ENDPOINT);
+  useEffect(() => {
+    if (isAuthenticated) {
+      socket.emit('join', { ...currentLoggerInUser });
+      socket.on('joined', data => console.log('JOINED DATA >', data));
+      return () => {
+        socket.emit('disconnect');
+      };
+    }
+  }, [ENDPOINT]);
 
   useEffect(() => {
-    const socket = socketIOClient(endPoint);
-    socket.emit('message', 'test message');
+    socket.on('USER_JOINED', message => {
+      console.log('-->', message);
+    });
   }, []);
 
   return isAuthenticated ? (

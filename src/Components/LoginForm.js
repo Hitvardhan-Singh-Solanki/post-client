@@ -46,11 +46,11 @@ const LoginForm = ({
       if (response.status === 200) {
         setIsAuthenticated(true);
         setCurrentLoggerInUser(response.data);
+        setLoading(false);
         history.push('/doc');
       } else {
         throw new Error(response.status);
       }
-      setLoading(false);
     } catch ({ message, response }) {
       const errorMsg = response ? response.data.error : message;
       setShowError(true);
