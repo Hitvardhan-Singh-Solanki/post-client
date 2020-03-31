@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import socketIOClient from 'socket.io-client';
 import Error from '../Components/Error';
 import AvatarList from '../Components/AvatarList';
 
@@ -13,6 +14,13 @@ const MaindocContaienr = styled.div`
 `;
 
 export default ({ isAuthenticated, currentLoggerInUser }) => {
+  const [endPoint, setEndPoint] = useState('http://localhost:8080');
+
+  useEffect(() => {
+    const socket = socketIOClient(endPoint);
+    socket.emit('message', 'test message');
+  }, []);
+
   return isAuthenticated ? (
     <MaindocContaienr>
       <AvatarList users={[{ ...currentLoggerInUser }]} />

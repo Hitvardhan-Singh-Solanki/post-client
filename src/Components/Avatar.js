@@ -28,6 +28,13 @@ export default ({
     }
   `;
 
+  const StyledPopup = styled(Popup)`
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+  `;
+
   const AvatarImage = styled.img`
     height: 200px;
     border-radius: 3px;
@@ -37,10 +44,10 @@ export default ({
 
   return (
     <AvatarContainer>
-      <Popup trigger={displayImage(image)}>
+      <StyledPopup trigger={displayImage(image)}>
         <div>{displayImage(image)}</div>
         <h3>UserName: {userName}</h3>
-      </Popup>
+      </StyledPopup>
     </AvatarContainer>
   );
 };
