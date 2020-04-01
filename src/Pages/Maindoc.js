@@ -48,7 +48,7 @@ export default ({ isAuthenticated, currentLoggerInUser }) => {
         setUsers(users);
       });
       socket.on('USER_LEFT', data => {
-        console.log('-->', data);
+        // TODO: show user left popup
       });
     }
   }, []);

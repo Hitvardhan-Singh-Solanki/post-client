@@ -44,7 +44,6 @@ export default ({ closeVisitedUser }) => {
     Axios.get('http://localhost:8080/api/auth/history')
       .then(({ data, status }) => {
         if (status === 200) {
-          console.log('DATA-->', data);
           setVisitors(data);
         }
       })
@@ -62,7 +61,6 @@ export default ({ closeVisitedUser }) => {
         <h3>Visited Users</h3>
         <StyledUl>
           {visitors.map(({ email, _id, time }) => {
-            console.log(email);
             return (
               <li key={_id}>
                 [{time}]: {email}
