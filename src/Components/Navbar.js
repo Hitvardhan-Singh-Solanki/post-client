@@ -65,11 +65,13 @@ const Navbar = ({
             </NavListElement>
           </>
         ) : (
-          <NavListElement onClick={handleLogout}>Logout</NavListElement>
+          <>
+            <NavListElement onClick={handleLogout}>Logout</NavListElement>
+            <NavListElement>
+              <Link to="/doc">Doc</Link>
+            </NavListElement>
+          </>
         )}
-        <NavListElement>
-          <Link to="/doc">Doc</Link>
-        </NavListElement>
       </NavList>
       {isAuthenticated && (
         <Avatar

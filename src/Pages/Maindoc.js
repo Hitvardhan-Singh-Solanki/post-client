@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import { Button } from 'semantic-ui-react';
 import styled from 'styled-components';
 import socketIOClient from 'socket.io-client';
 import Error from '../Components/Error';
 import AvatarList from '../Components/AvatarList';
+import Visited from '../Components/Visited';
 
 const MaindocContaienr = styled.div`
   height: 100%;
@@ -11,6 +13,7 @@ const MaindocContaienr = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-flow: column;
 `;
 
 export default ({ isAuthenticated, currentLoggerInUser }) => {
@@ -19,6 +22,8 @@ export default ({ isAuthenticated, currentLoggerInUser }) => {
 
   const [newUser, setNewUser] = useState({});
   const [users, setUsers] = useState([]);
+
+  const [showVisited, setShowVisited] = useState(false);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -48,10 +53,23 @@ export default ({ isAuthenticated, currentLoggerInUser }) => {
     }
   }, []);
 
+  const showVisitedUsers = e => {
+    e.preventDefault();
+    setShowVisited(true);
+  };
+
+  const closeVisitedUser = e => {
+    setShowVisited(false);
+  };
+
   return isAuthenticated ? (
-    <MaindocContaienr>
-      <AvatarList users={users} />
-    </MaindocContaienr>
+    <>
+      <MaindocContaienr>
+        <AvatarList users={users} />
+        <Button onClick={showVisitedUsers}>Show Visitors</Button>
+      </MaindocContaienr>
+      {showVisited && <Visited closeVisitedUser={closeVisitedUser} />}
+    </>
   ) : (
     <Error message={'Oops... are you lost?'} />
   );
