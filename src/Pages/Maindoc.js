@@ -15,42 +15,41 @@ const MaindocContaienr = styled.div`
 
 export default ({ isAuthenticated, currentLoggerInUser }) => {
   const ENDPOINT = 'http://localhost:8080';
-  const socket = socketIOClient(ENDPOINT);
+  let socket = {};
 
   const [newUser, setNewUser] = useState({});
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
     if (isAuthenticated) {
+      socket = socketIOClient(ENDPOINT);
       socket.emit('join', { ...currentLoggerInUser });
       socket.on('joined', data => {
         alert(data.text);
       });
-      return () => {
-        socket.emit('disconnect');
-      };
     }
+
+    return () => {
+      if (socket.emit) socket.disconnect();
+    };
   }, [ENDPOINT]);
 
   useEffect(() => {
-    socket.on('USER_JOINED', user => {
-      setNewUser(user);
-    });
-    socket.on('ROOM_DATA', ({ users }) => {
-      console.log(users);
-      setUsers(users);
-    });
-    socket.on('USER_LEFT', data => {
-      console.log('-->', data);
-    });
-    return () => {
-      socket.emit('disconnect', { data: 'test' });
-    };
+    if (socket.on) {
+      socket.on('USER_JOINED', user => {
+        setNewUser(user);
+      });
+      socket.on('ROOM_DATA', ({ users }) => {
+        setUsers(users);
+      });
+      socket.on('USER_LEFT', data => {
+        console.log('-->', data);
+      });
+    }
   }, []);
 
   return isAuthenticated ? (
     <MaindocContaienr>
-      {newUser.email}
       <AvatarList users={users} />
     </MaindocContaienr>
   ) : (

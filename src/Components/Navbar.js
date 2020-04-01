@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import Axios from 'axios';
 import { withRouter } from 'react-router-dom';
 import Avatar from './Avatar';
-import avt from '../assets/images/avt1.svg';
 
 const NavbarContainer = styled.div`
   background-color: rgba(0, 0, 0, 0.2);
@@ -43,14 +42,6 @@ const Navbar = ({
   setCurrentLoggerInUser,
   currentLoggerInUser
 }) => {
-  const sendReqToProtect = () => {
-    Axios.get('http://localhost:8080/api/protected/test', {
-      withCredentials: true
-    }).then(res => {
-      console.log('--->', res);
-    });
-  };
-
   const handleLogout = () => {
     Axios.get('http://localhost:8080/api/auth/logout', {
       withCredentials: true
