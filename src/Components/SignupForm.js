@@ -41,10 +41,10 @@ const SignupForm = ({ history }) => {
     try {
       setLoading(true);
       const { status } = await axios.post(
-        'http://localhost:8080/api/auth/signup',
+        `${process.env.ENDPOINT}/api/auth/signup`,
         {
           email,
-          password
+          password,
         }
       );
       if (status === 200) {
@@ -62,13 +62,13 @@ const SignupForm = ({ history }) => {
     }
   };
 
-  const handleEmailInputChange = e => {
+  const handleEmailInputChange = (e) => {
     setemail(e.target.value);
   };
-  const handlePasswordInputChange = e => {
+  const handlePasswordInputChange = (e) => {
     setPassword(e.target.value);
   };
-  const handleCnfPasswordInputChange = e => {
+  const handleCnfPasswordInputChange = (e) => {
     setCnfPassword(e.target.value);
   };
   return showError ? (

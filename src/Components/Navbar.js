@@ -40,11 +40,11 @@ const Navbar = ({
   setIsAuthenticated,
   history,
   setCurrentLoggerInUser,
-  currentLoggerInUser
+  currentLoggerInUser,
 }) => {
   const handleLogout = () => {
-    Axios.get('http://localhost:8080/api/auth/logout', {
-      withCredentials: true
+    Axios.get(`${process.env.ENDPOINT}/api/auth/logout`, {
+      withCredentials: true,
     }).then(() => {
       setIsAuthenticated(false);
       setCurrentLoggerInUser({});

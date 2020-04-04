@@ -25,7 +25,7 @@ const LoginForm = ({
   history,
   setIsAuthenticated,
   isAuthenticated,
-  setCurrentLoggerInUser
+  setCurrentLoggerInUser,
 }) => {
   const [email, setemail] = useState('');
   const [password, setPassword] = useState('');
@@ -37,10 +37,10 @@ const LoginForm = ({
     setLoading(true);
     try {
       const response = await axios.post(
-        'http://localhost:8080/api/auth/login',
+        `${process.env.ENDPOINT}/api/auth/login`,
         {
           email,
-          password
+          password,
         }
       );
       if (response.status === 200) {
@@ -63,10 +63,10 @@ const LoginForm = ({
     }
   };
 
-  const handleEmailInputChange = e => {
+  const handleEmailInputChange = (e) => {
     setemail(e.target.value);
   };
-  const handlePasswordInputChange = e => {
+  const handlePasswordInputChange = (e) => {
     setPassword(e.target.value);
   };
   return (

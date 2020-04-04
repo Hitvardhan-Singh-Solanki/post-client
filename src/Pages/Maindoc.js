@@ -17,7 +17,7 @@ const MaindocContaienr = styled.div`
 `;
 
 export default ({ isAuthenticated, currentLoggerInUser }) => {
-  const ENDPOINT = 'http://localhost:8080';
+  const ENDPOINT = process.env.ENDPOINT;
   let socket = {};
 
   const [newUser, setNewUser] = useState({});
@@ -29,7 +29,7 @@ export default ({ isAuthenticated, currentLoggerInUser }) => {
     if (isAuthenticated) {
       socket = socketIOClient(ENDPOINT);
       socket.emit('join', { ...currentLoggerInUser });
-      socket.on('joined', data => {
+      socket.on('joined', (data) => {
         alert(data.text);
       });
     }
@@ -41,24 +41,24 @@ export default ({ isAuthenticated, currentLoggerInUser }) => {
 
   useEffect(() => {
     if (socket.on) {
-      socket.on('USER_JOINED', user => {
+      socket.on('USER_JOINED', (user) => {
         setNewUser(user);
       });
       socket.on('ROOM_DATA', ({ users }) => {
         setUsers(users);
       });
-      socket.on('USER_LEFT', data => {
+      socket.on('USER_LEFT', (data) => {
         // TODO: show user left popup
       });
     }
   }, []);
 
-  const showVisitedUsers = e => {
+  const showVisitedUsers = (e) => {
     e.preventDefault();
     setShowVisited(true);
   };
 
-  const closeVisitedUser = e => {
+  const closeVisitedUser = (e) => {
     setShowVisited(false);
   };
 

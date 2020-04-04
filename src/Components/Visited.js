@@ -41,13 +41,13 @@ export default ({ closeVisitedUser }) => {
   const [visitors, setVisitors] = useState([]);
 
   useEffect(() => {
-    Axios.get('http://localhost:8080/api/auth/history')
+    Axios.get(`${process.env.ENDPOINT}/api/auth/history`)
       .then(({ data, status }) => {
         if (status === 200) {
           setVisitors(data);
         }
       })
-      .catch(e => {
+      .catch((e) => {
         console.log(e);
       });
   }, []);

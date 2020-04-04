@@ -3,7 +3,7 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Redirect
+  Redirect,
 } from 'react-router-dom';
 import AuthPage from './Pages/hocs/AuthPage';
 import Maindoc from './Pages/Maindoc';
@@ -22,14 +22,14 @@ function App() {
   useEffect(() => {
     setLoading(true);
     axios
-      .get('http://localhost:8080/api/auth/check-token')
-      .then(res => {
+      .get(`${process.env.ENDPOINT}/api/auth/check-token`)
+      .then((res) => {
         if (res.status === 200) {
           setIsAuthenticated(true);
           setCurrentLoggerInUser(res.data);
         } else setIsAuthenticated(false);
       })
-      .catch(e => {
+      .catch((e) => {
         console.log(e);
       })
       .finally(() => {
