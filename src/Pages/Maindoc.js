@@ -17,7 +17,7 @@ const MaindocContaienr = styled.div`
 `;
 
 export default ({ isAuthenticated, currentLoggerInUser }) => {
-  const ENDPOINT = process.env.ENDPOINT;
+  const REACT_APP_ENDPOINT = process.env.REACT_APP_ENDPOINT;
   let socket = {};
 
   const [newUser, setNewUser] = useState({});
@@ -27,7 +27,7 @@ export default ({ isAuthenticated, currentLoggerInUser }) => {
 
   useEffect(() => {
     if (isAuthenticated) {
-      socket = socketIOClient(ENDPOINT);
+      socket = socketIOClient(REACT_APP_ENDPOINT);
       socket.emit('join', { ...currentLoggerInUser });
       socket.on('joined', (data) => {
         alert(data.text);
@@ -37,7 +37,7 @@ export default ({ isAuthenticated, currentLoggerInUser }) => {
     return () => {
       if (socket.emit) socket.disconnect();
     };
-  }, [ENDPOINT]);
+  }, [REACT_APP_ENDPOINT]);
 
   useEffect(() => {
     if (socket.on) {

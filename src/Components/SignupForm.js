@@ -41,7 +41,7 @@ const SignupForm = ({ history }) => {
     try {
       setLoading(true);
       const { status } = await axios.post(
-        `${process.env.ENDPOINT}/api/auth/signup`,
+        `${process.env.REACT_APP_ENDPOINT}/api/auth/signup`,
         {
           email,
           password,

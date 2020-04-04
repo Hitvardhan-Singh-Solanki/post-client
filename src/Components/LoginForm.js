@@ -37,7 +37,7 @@ const LoginForm = ({
     setLoading(true);
     try {
       const response = await axios.post(
-        `${process.env.ENDPOINT}/api/auth/login`,
+        `${process.env.REACT_APP_ENDPOINT}/api/auth/login`,
         {
           email,
           password,
