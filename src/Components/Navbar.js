@@ -43,7 +43,7 @@ const Navbar = ({
   currentLoggerInUser,
 }) => {
   const handleLogout = () => {
-    Axios.get(`${process.env.REACT_APP_ENDPOINT}/api/auth/logout`, {
+    Axios.get(`/api/auth/logout`, {
       withCredentials: true,
     }).then(() => {
       setIsAuthenticated(false);

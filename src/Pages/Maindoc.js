@@ -17,7 +17,6 @@ const MaindocContaienr = styled.div`
 `;
 
 export default ({ isAuthenticated, currentLoggerInUser }) => {
-  const ENDPOINT = process.env.REACT_APP_ENDPOINT;
   let socket = {};
 
   const [newUser, setNewUser] = useState({});
@@ -27,7 +26,7 @@ export default ({ isAuthenticated, currentLoggerInUser }) => {
 
   useEffect(() => {
     if (isAuthenticated) {
-      socket = socketIOClient(ENDPOINT);
+      socket = socketIOClient('/');
       socket.emit('join', { ...currentLoggerInUser });
       socket.on('joined', (data) => {
         alert(data.text);
@@ -37,7 +36,7 @@ export default ({ isAuthenticated, currentLoggerInUser }) => {
     return () => {
       if (socket.emit) socket.disconnect();
     };
-  }, [ENDPOINT]);
+  }, []);
 
   useEffect(() => {
     if (socket.on) {
@@ -51,7 +50,7 @@ export default ({ isAuthenticated, currentLoggerInUser }) => {
         // TODO: show user left popup
       });
     }
-  }, []);
+  }, [socket]);
 
   const showVisitedUsers = (e) => {
     e.preventDefault();

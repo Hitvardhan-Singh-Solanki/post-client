@@ -36,13 +36,10 @@ const LoginForm = ({
   const setValues = async () => {
     setLoading(true);
     try {
-      const response = await axios.post(
-        `${process.env.REACT_APP_ENDPOINT}/api/auth/login`,
-        {
-          email,
-          password,
-        }
-      );
+      const response = await axios.post(`/api/auth/login`, {
+        email,
+        password,
+      });
       if (response.status === 200) {
         setIsAuthenticated(true);
         setCurrentLoggerInUser(response.data);
@@ -71,6 +68,7 @@ const LoginForm = ({
   };
   return (
     <>
+      <h1>LOGIN</h1>
       {showError ? (
         <Error message={errorMsg} />
       ) : loading ? (

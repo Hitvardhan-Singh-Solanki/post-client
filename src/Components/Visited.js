@@ -41,7 +41,7 @@ export default ({ closeVisitedUser }) => {
   const [visitors, setVisitors] = useState([]);
 
   useEffect(() => {
-    Axios.get(`${process.env.REACT_APP_ENDPOINT}/api/auth/history`)
+    Axios.get(`/api/auth/history`)
       .then(({ data, status }) => {
         if (status === 200) {
           setVisitors(data);

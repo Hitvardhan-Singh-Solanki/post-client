@@ -19,12 +19,10 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [currentLoggerInUser, setCurrentLoggerInUser] = useState({});
 
-  console.log('-->', process.env);
-
   useEffect(() => {
     setLoading(true);
     axios
-      .get(`${process.env.REACT_APP_ENDPOINT}/api/auth/check-token`)
+      .get(`/api/auth/check-token`)
       .then((res) => {
         if (res.status === 200) {
           setIsAuthenticated(true);
